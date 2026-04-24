@@ -54,7 +54,9 @@ bash scripts/run-local-paper.sh
 3. Hider hides, then clicks **I'm Ready!**
 4. Hunters open **Questions** menu and choose question icons (with hover tooltips)
 5. Hider receives powerup picks and chooses from **Pick Powerups** menu
-6. Eliminated regions are darkened in-world using client-side blacked-out terrain overlay for masked sides/areas
+6. Click the minimap icon to open a dedicated minimap GUI, then click **Use This Minimap** to equip a live map in-hand
+7. Minimap now uses a live block-color sampling renderer (map-like shading/depth) and darkens masked regions on the map
+8. Eliminated regions are darkened in-world using client-side blacked-out terrain overlay for masked sides/areas
 
 ## Textures
 

@@ -70,7 +70,7 @@ public final class HnsCommand implements CommandExecutor, TabCompleter {
             sender.sendMessage("Players only.");
             return;
         }
-        game.openMinimapMenu(p);
+        game.openMinimapViewer(p);
     }
 
     private void start(CommandSender sender, String[] args) {

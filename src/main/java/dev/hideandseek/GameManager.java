@@ -10,12 +10,13 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.MapMeta;
-import org.bukkit.map.MapView;
+import org.bukkit.map.*;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitTask;
 
+import java.awt.Color;
 import java.util.*;
 
 public final class GameManager {
@@ -23,6 +24,7 @@ public final class GameManager {
     public static final String MENU_QUESTIONS_TITLE = ChatColor.DARK_GRAY + "Questions";
     public static final String MENU_POWERUPS_TITLE = ChatColor.DARK_GRAY + "Pick Powerups";
     public static final String MENU_MINIMAP_TITLE = ChatColor.DARK_GRAY + "Openable Minimap";
+    public static final String MENU_MINIMAP_VIEWER_TITLE = ChatColor.DARK_GRAY + "Minimap Viewer";
     public static final String MENU_ITEM_NAME = ChatColor.GOLD + "Hide&Seek Menu";
 
     private final Plugin plugin;
@@ -196,9 +198,22 @@ public final class GameManager {
 
     public void openMinimapMenu(Player player) {
         Inventory inv = Bukkit.createInventory(null, 27, MENU_MINIMAP_TITLE);
-        inv.setItem(13, buildMinimapItem());
-        inv.setItem(22, named(Material.PAPER, ChatColor.GRAY + "Masked Regions", List.of(
+        inv.setItem(11, named(Material.FILLED_MAP, ChatColor.AQUA + "Open Live Minimap", List.of(
+                ChatColor.GRAY + "Click to open dedicated minimap GUI",
+                ChatColor.GRAY + "then click map again to hold it in-hand"
+        )));
+        inv.setItem(15, named(Material.PAPER, ChatColor.GRAY + "Masked Regions", List.of(
                 ChatColor.DARK_GRAY + (maskedRegions.isEmpty() ? "none" : String.join(", ", maskedRegions.stream().map(MaskedRegion::label).toList()))
+        )));
+        player.openInventory(inv);
+    }
+
+    public void openMinimapViewer(Player player) {
+        Inventory inv = Bukkit.createInventory(null, 54, MENU_MINIMAP_VIEWER_TITLE);
+        inv.setItem(22, buildMinimapItem());
+        inv.setItem(31, named(Material.LIME_CONCRETE, ChatColor.GREEN + "Use This Minimap", List.of(
+                ChatColor.GRAY + "Puts the minimap in your main hand",
+                ChatColor.GRAY + "for a fully working live map"
         )));
         player.openInventory(inv);
     }
@@ -244,7 +259,7 @@ public final class GameManager {
         String title = ChatColor.stripColor(event.getView().getTitle());
         if (title == null) return;
 
-        if (title.startsWith("Minimap & Ready") || title.startsWith("Questions") || title.startsWith("Pick Powerups") || title.startsWith("Openable Minimap")) {
+        if (title.startsWith("Minimap & Ready") || title.startsWith("Questions") || title.startsWith("Pick Powerups") || title.startsWith("Openable Minimap") || title.startsWith("Minimap Viewer")) {
             event.setCancelled(true);
         }
 
@@ -275,9 +290,17 @@ public final class GameManager {
             return;
         }
 
-        if (title.startsWith("Openable Minimap") && clicked.getType() == Material.FILLED_MAP) {
-            player.getInventory().addItem(buildMinimapItem());
-            player.sendMessage(ChatColor.GREEN + "Minimap copied to your inventory.");
+        if (title.startsWith("Openable Minimap") && ChatColor.stripColor(name).equalsIgnoreCase("Open Live Minimap")) {
+            openMinimapViewer(player);
+            return;
+        }
+
+        if (title.startsWith("Minimap Viewer")) {
+            if (clicked.getType() == Material.FILLED_MAP || ChatColor.stripColor(name).equalsIgnoreCase("Use This Minimap")) {
+                player.getInventory().setItemInMainHand(buildMinimapItem());
+                player.closeInventory();
+                player.sendMessage(ChatColor.GREEN + "Minimap equipped in your hand.");
+            }
             return;
         }
 
@@ -427,13 +450,20 @@ public final class GameManager {
         };
     }
 
+
+    private boolean isMaskedForRenderer(Location location) {
+        return maskedRegions.stream().anyMatch(mask -> mask.contains(location));
+    }
+
     private void setupMinimapView(World world) {
         minimapView = Bukkit.createMap(world);
+        minimapView.getRenderers().forEach(minimapView::removeRenderer);
         minimapView.setScale(MapView.Scale.CLOSE);
         minimapView.setCenterX(arenaCenter.getBlockX());
         minimapView.setCenterZ(arenaCenter.getBlockZ());
-        minimapView.setTrackingPosition(true);
-        minimapView.setUnlimitedTracking(true);
+        minimapView.setTrackingPosition(false);
+        minimapView.setUnlimitedTracking(false);
+        minimapView.addRenderer(new LiveMinimapRenderer());
     }
 
     private ItemStack buildMinimapItem() {
@@ -594,6 +624,60 @@ public final class GameManager {
         public boolean contains(Location location) {
             if (!location.getWorld().equals(center.getWorld())) return false;
             return location.distance(center) <= radius;
+        }
+    }
+
+    private final class LiveMinimapRenderer extends MapRenderer {
+        private final Map<UUID, Long> lastRenderAt = new HashMap<>();
+
+        @Override
+        public void render(MapView map, MapCanvas canvas, Player player) {
+            if (player == null || !player.isOnline()) return;
+            long now = System.currentTimeMillis();
+            long last = lastRenderAt.getOrDefault(player.getUniqueId(), 0L);
+            if (now - last < 350) return;
+            lastRenderAt.put(player.getUniqueId(), now);
+
+            World world = player.getWorld();
+            int cx = player.getLocation().getBlockX();
+            int cz = player.getLocation().getBlockZ();
+            int scale = 4;
+
+            for (int px = 0; px < 128; px++) {
+                for (int pz = 0; pz < 128; pz++) {
+                    int wx = cx + (px - 64) * scale;
+                    int wz = cz + (pz - 64) * scale;
+                    int wy = world.getHighestBlockYAt(wx, wz);
+                    Material top = world.getBlockAt(wx, Math.max(world.getMinHeight(), wy - 1), wz).getType();
+
+                    Color base = colorFor(top, wy);
+                    if (isMaskedForRenderer(new Location(world, wx + 0.5, wy, wz + 0.5))) {
+                        base = new Color(base.getRed() / 6, base.getGreen() / 6, base.getBlue() / 6);
+                    }
+                    canvas.setPixelColor(px, pz, base);
+                }
+            }
+
+            MapCursorCollection cursors = new MapCursorCollection();
+            cursors.addCursor(new MapCursor((byte) 0, (byte) 0, (byte) 0, MapCursor.Type.WHITE_POINTER, true));
+            canvas.setCursors(cursors);
+        }
+
+        private Color colorFor(Material material, int height) {
+            int shade = Math.max(-35, Math.min(35, (height - arenaCenter.getBlockY()) / 2));
+            Color base = switch (material) {
+                case WATER, KELP, KELP_PLANT, SEAGRASS, TALL_SEAGRASS -> new Color(60, 100, 230);
+                case SAND, RED_SAND, SANDSTONE, CHISELED_SANDSTONE, CUT_SANDSTONE -> new Color(218, 205, 125);
+                case GRASS_BLOCK, TALL_GRASS, SHORT_GRASS, FERN, LARGE_FERN, OAK_LEAVES, BIRCH_LEAVES, SPRUCE_LEAVES, JUNGLE_LEAVES, ACACIA_LEAVES, DARK_OAK_LEAVES, MANGROVE_LEAVES, CHERRY_LEAVES -> new Color(88, 164, 77);
+                case STONE, COBBLESTONE, DEEPSLATE, TUFF, ANDESITE, DIORITE, GRANITE -> new Color(125, 125, 125);
+                case SNOW_BLOCK, SNOW, POWDER_SNOW -> new Color(235, 240, 245);
+                default -> material.name().contains("LOG") || material.name().contains("WOOD") ? new Color(121, 85, 58) : new Color(110, 140, 95);
+            };
+            return new Color(clamp(base.getRed() + shade), clamp(base.getGreen() + shade), clamp(base.getBlue() + shade));
+        }
+
+        private int clamp(int v) {
+            return Math.max(0, Math.min(255, v));
         }
     }
 

@@ -1,0 +1,81 @@
+[20:49:55] [Paper Plugin Remapper Thread - 0/INFO]: [ReobfServer] Remapping server...
+[20:50:00] [Paper Plugin Remapper Thread - 0/INFO]: [ReobfServer] Done remapping server in 5427ms.
+[20:50:00] [Paper Plugin Remapper Thread - 2/INFO]: [PluginRemapper] Remapping plugin 'plugins\hideandseek-0.1.0.jar'...
+[20:50:01] [Paper Plugin Remapper Thread - 2/INFO]: [PluginRemapper] Done remapping plugin 'plugins\hideandseek-0.1.0.jar' in 129ms.
+[20:50:07] [ServerMain/INFO]: Environment: Environment[sessionHost=https://sessionserver.mojang.com, servicesHost=https://api.minecraftservices.com, name=PROD]
+[20:50:07] [ServerMain/INFO]: Found new data pack file/bukkit, loading it automatically
+[20:50:07] [ServerMain/INFO]: Found new data pack paper, loading it automatically
+[20:50:08] [ServerMain/INFO]: No existing world data, creating new world
+[20:50:09] [ServerMain/INFO]: Loaded 1175 recipes
+[20:50:09] [ServerMain/INFO]: Loaded 1276 advancements
+[20:50:09] [Server thread/INFO]: Starting minecraft server version 1.20.6
+[20:50:09] [Server thread/INFO]: Loading properties
+[20:50:09] [Server thread/INFO]: This server is running Paper version 1.20.6-151-ver/1.20.6@a4f0f5c (2024-10-30T19:13:22Z) (Implementing API version 1.20.6-R0.1-SNAPSHOT)
+[20:50:10] [Server thread/INFO]: Server Ping Player Sample Count: 12
+[20:50:10] [Server thread/INFO]: Using 4 threads for Netty based IO
+[20:50:11] [Server thread/INFO]: [ChunkTaskScheduler] Chunk system is using 1 I/O threads, 3 worker threads, and gen parallelism of 3 threads
+[20:50:11] [Server thread/WARN]: [!] The timings profiler has been enabled but has been scheduled for removal from Paper in the future.
+    We recommend installing the spark profiler as a replacement: https://spark.lucko.me/
+    For more information please visit: https://github.com/PaperMC/Paper/issues/8948
+[20:50:11] [Server thread/INFO]: Default game type: SURVIVAL
+[20:50:11] [Server thread/INFO]: Generating keypair
+[20:50:11] [Server thread/INFO]: Starting Minecraft server on *:25565
+[20:50:11] [Server thread/INFO]: Using default channel type
+[20:50:11] [Server thread/INFO]: Paper: Using Java compression from Velocity.
+[20:50:11] [Server thread/INFO]: Paper: Using Java cipher from Velocity.
+[20:50:11] [Server thread/INFO]: [HideAndSeek] Loading server plugin HideAndSeek v0.1.0
+[20:50:11] [Server thread/INFO]: Preparing level "world"
+[20:50:17] [Server thread/INFO]: Preparing start region for dimension minecraft:overworld
+[20:50:19] [Server thread/INFO]: Time elapsed: 2550 ms
+[20:50:19] [Server thread/INFO]: Preparing start region for dimension minecraft:the_nether
+[20:50:20] [Server thread/INFO]: Time elapsed: 637 ms
+[20:50:20] [Server thread/INFO]: Preparing start region for dimension minecraft:the_end
+[20:50:20] [Server thread/INFO]: Time elapsed: 354 ms
+[20:50:20] [Server thread/INFO]: [HideAndSeek] Enabling HideAndSeek v0.1.0
+[20:50:20] [Server thread/INFO]: [HideAndSeek] Hide and Seek loaded.
+[20:50:20] [Server thread/INFO]: Running delayed init tasks
+[20:50:20] [Server thread/INFO]: Done (11.185s)! For help, type "help"
+[20:50:20] [Server thread/INFO]: *************************************************************************************
+[20:50:20] [Server thread/INFO]: This is the first time you're starting this server.
+[20:50:20] [Server thread/INFO]: It's recommended you read our 'Getting Started' documentation for guidance.
+[20:50:20] [Server thread/INFO]: View this and more helpful information here: https://docs.papermc.io/paper/next-steps
+[20:50:20] [Server thread/INFO]: *************************************************************************************
+[20:50:20] [Server thread/INFO]: Timings Reset
+[20:50:21] [User Authenticator #0/INFO]: UUID of player craftal is 03722fc9-cbf2-4172-ad5e-fdcb58150c6c
+[20:50:24] [Server thread/INFO]: craftal joined the game
+[20:50:24] [Server thread/INFO]: craftal[/127.0.0.1:10417] logged in with entity id 63 at ([world]1.5, 89.0, 6.5)
+[20:50:31] [Server thread/INFO]: Made craftal a server operator
+[20:50:41] [Server thread/INFO]: craftal issued server command: /gamemode creative
+[20:50:41] [Server thread/INFO]: [craftal: Set own game mode to Creative Mode]
+[20:50:49] [Server thread/INFO]: craftal issued server command: /hns disguise tuff_stairs
+[20:51:03] [Server thread/INFO]: craftal issued server command: /hns ask waterOrLava
+[20:51:11] [Server thread/INFO]: craftal issued server command: /hns open
+[20:51:36] [Server thread/INFO]: craftal issued server command: /hns open
+[20:51:41] [Server thread/INFO]: craftal lost connection: Disconnected
+[20:51:41] [Server thread/INFO]: craftal left the game
+[20:52:07] [Server thread/INFO]: Stopping server
+[20:52:07] [Server thread/INFO]: [HideAndSeek] Disabling HideAndSeek v0.1.0
+[20:52:07] [Server thread/INFO]: Saving players
+[20:52:07] [Server thread/INFO]: Saving worlds
+[20:52:07] [Server thread/INFO]: Saving chunks for level 'ServerLevel[world]'/minecraft:overworld
+[20:52:07] [Server thread/INFO]: [ChunkHolderManager] Waiting 60s for chunk system to halt for world 'world'
+[20:52:07] [Server thread/INFO]: [ChunkHolderManager] Halted chunk system for world 'world'
+[20:52:07] [Server thread/INFO]: [ChunkHolderManager] Saving all chunkholders for world 'world'
+[20:52:09] [Server thread/INFO]: [ChunkHolderManager] Saved 961 block chunks, 650 entity chunks, 6 poi chunks in world 'world' in 1.41s
+[20:52:09] [Server thread/INFO]: ThreadedAnvilChunkStorage (world): All chunks are saved
+[20:52:09] [Server thread/INFO]: Saving chunks for level 'ServerLevel[world_nether]'/minecraft:the_nether
+[20:52:09] [Server thread/INFO]: [ChunkHolderManager] Waiting 60s for chunk system to halt for world 'world_nether'
+[20:52:09] [Server thread/INFO]: [ChunkHolderManager] Halted chunk system for world 'world_nether'
+[20:52:09] [Server thread/INFO]: [ChunkHolderManager] Saving all chunkholders for world 'world_nether'
+[20:52:09] [Server thread/INFO]: [ChunkHolderManager] Saved 841 block chunks, 49 entity chunks, 0 poi chunks in world 'world_nether' in 0.27s
+[20:52:09] [Server thread/INFO]: ThreadedAnvilChunkStorage (DIM-1): All chunks are saved
+[20:52:09] [Server thread/INFO]: Saving chunks for level 'ServerLevel[world_the_end]'/minecraft:the_end
+[20:52:09] [Server thread/INFO]: [ChunkHolderManager] Waiting 60s for chunk system to halt for world 'world_the_end'
+[20:52:09] [Server thread/INFO]: [ChunkHolderManager] Halted chunk system for world 'world_the_end'
+[20:52:09] [Server thread/INFO]: [ChunkHolderManager] Saving all chunkholders for world 'world_the_end'
+[20:52:09] [Server thread/INFO]: [ChunkHolderManager] Saved 841 block chunks, 49 entity chunks, 0 poi chunks in world 'world_the_end' in 0.21s
+[20:52:09] [Server thread/INFO]: ThreadedAnvilChunkStorage (DIM1): All chunks are saved
+[20:52:09] [Server thread/INFO]: ThreadedAnvilChunkStorage: All dimensions are saved
+[20:52:09] [Server thread/INFO]: Flushing Chunk IO
+[20:52:09] [Server thread/INFO]: Closing Thread Pool
+[20:52:09] [Server thread/INFO]: Closing Server

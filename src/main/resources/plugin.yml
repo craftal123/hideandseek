@@ -1,0 +1,13 @@
+name: HideAndSeek
+version: '0.1.0'
+main: dev.hideandseek.HideAndSeekPlugin
+api-version: '1.20'
+author: codex
+commands:
+  hns:
+    description: Hide and seek game controls.
+    usage: /hns
+    permission: hideandseek.use
+permissions:
+  hideandseek.use:
+    default: op

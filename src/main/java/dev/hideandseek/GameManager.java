@@ -659,7 +659,7 @@ public final class GameManager {
             }
 
             MapCursorCollection cursors = new MapCursorCollection();
-            cursors.addCursor(new MapCursor((byte) 0, (byte) 0, (byte) 0, MapCursor.Type.WHITE_POINTER, true));
+            cursors.addCursor(new MapCursor((byte) 0, (byte) 0, (byte) 0, MapCursor.Type.PLAYER, true));
             canvas.setCursors(cursors);
         }
 

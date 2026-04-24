@@ -50,6 +50,7 @@ public final class HnsCommand implements CommandExecutor, TabCompleter {
             case "status" -> sender.sendMessage(game.status());
             case "found" -> found(sender, args);
             case "open" -> openMenu(sender);
+            case "minimap" -> openMinimap(sender);
             default -> sender.sendMessage(help());
         }
         return true;
@@ -61,6 +62,15 @@ public final class HnsCommand implements CommandExecutor, TabCompleter {
             return;
         }
         game.openMainMenu(p);
+    }
+
+
+    private void openMinimap(CommandSender sender) {
+        if (!(sender instanceof Player p)) {
+            sender.sendMessage("Players only.");
+            return;
+        }
+        game.openMinimapMenu(p);
     }
 
     private void start(CommandSender sender, String[] args) {
@@ -151,13 +161,13 @@ public final class HnsCommand implements CommandExecutor, TabCompleter {
     }
 
     private String help() {
-        return ChatColor.AQUA + "/hns start <hider> <huntersCsv> [seconds], /hns open, /hns ask [id], /hns complete, /hns disguise <block>, /hns status, /hns found <hider>, /hns stop";
+        return ChatColor.AQUA + "/hns start <hider> <huntersCsv> [seconds], /hns open, /hns minimap, /hns ask [id], /hns complete, /hns disguise <block>, /hns status, /hns found <hider>, /hns stop";
     }
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         if (args.length == 1) {
-            return List.of("start", "stop", "open", "ask", "complete", "disguise", "status", "found");
+            return List.of("start", "stop", "open", "minimap", "ask", "complete", "disguise", "status", "found");
         }
         if (args.length == 2 && args[0].equalsIgnoreCase("ask")) {
             return List.of("northSouth", "eastWest", "sameBiome", "aboveY75", "distance250", "waterOrLava");

@@ -38,6 +38,7 @@ bash scripts/run-local-paper.sh
 ```bash
 /hns start <hider> <hunter1,hunter2,...> [hideSeconds]
 /hns open
+/hns minimap
 /hns ask [questionId]
 /hns complete
 /hns disguise <block>
@@ -53,7 +54,7 @@ bash scripts/run-local-paper.sh
 3. Hider hides, then clicks **I'm Ready!**
 4. Hunters open **Questions** menu and choose question icons (with hover tooltips)
 5. Hider receives powerup picks and chooses from **Pick Powerups** menu
-6. Eliminated regions are darkened for hunters (blindness + dark particles inside masked regions)
+6. Eliminated regions are darkened in-world using client-side blacked-out terrain overlay for masked sides/areas
 
 ## Textures
 
